@@ -36,15 +36,14 @@ function getFloodColor(dn) {
 // ================================
 // WFS URL
 // ================================
-const wfsUrl =
-"http://localhost:8080/geoserver/floodproject/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=floodproject%3Aflooddissolve&outputFormat=application%2Fjson&srsName=EPSG:4326";
-
+const floodmap =
+"flooddissolve.shp"
 
 
 // ================================
 // Load WFS
 // ================================
-fetch(wfsUrl)
+fetch(floodmap)
 
 .then(response => response.json())
 
