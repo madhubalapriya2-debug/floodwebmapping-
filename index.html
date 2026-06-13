@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Flood Vulnerability Dashboard</title>
+
+  <!-- Leaflet CSS -->
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <!-- Custom CSS -->
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+
+  <div class="header">
+    <img src="asset/floodimg.jpeg" alt="Logo" class="logo">
+    <h1 class="title">Flood Vulnerability Dashboard</h1>
+  </div>
+
+  <!-- Main Container -->
+
+  <div class="main-container">
+
+```
+<!-- Map -->
+<div id="map"></div>
+
+<!-- Side Panel -->
+<div class="side-panel">
+
+  <h2>Flood Filter</h2>
+
+  <label for="floodSelect">Select Flood Level:</label>
+
+  <select id="floodSelect">
+    <option value="">-- Select Flood Level --</option>
+  </select>
+
+  <br><br>
+
+  <div class="legend">
+    <h3>Flood Classes</h3>
+
+    <p><span style="color:green;">■</span> DN = 1 (Very Low)</p>
+    <p><span style="color:yellow;">■</span> DN = 2 (Low)</p>
+    <p><span style="color:orange;">■</span> DN = 3 (Moderate)</p>
+    <p><span style="color:red;">■</span> DN = 4 (High)</p>
+    <p><span style="color:maroon;">■</span> DN = 5 (Very High)</p>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- Leaflet JS -->
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Your JavaScript -->
+
+  <script src="script.js"></script>
+
+</body>
+</html>

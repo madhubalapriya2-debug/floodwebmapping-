@@ -1,0 +1,88 @@
+/* Reset */
+body{
+margin:0;
+padding:0;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header */
+.header{
+display:flex;
+align-items:center;
+padding:10px 20px;
+background-color:#0d5875;
+color:white;
+height:60px;
+box-sizing:border-box;
+}
+
+.logo{
+height:35px;
+margin-right:10px;
+}
+
+.title{
+margin:0;
+font-size:22px;
+font-weight:bold;
+}
+
+/* Main Layout */
+.main-container{
+display:flex;
+height:calc(100vh - 60px);
+}
+
+/* Map */
+#map{
+flex:1;
+}
+
+/* Side Panel */
+.side-panel{
+width:300px;
+background-color:#e9f1ee;
+padding:20px;
+box-sizing:border-box;
+border-left:1px solid #ccc;
+overflow-y:auto;
+}
+
+.side-panel h2{
+margin-top:0;
+color:#0d5875;
+}
+
+/* Dropdown */
+.side-panel label{
+font-weight:bold;
+display:block;
+margin-bottom:8px;
+}
+
+.side-panel select{
+width:100%;
+padding:8px;
+border:1px solid #ccc;
+border-radius:4px;
+font-size:14px;
+}
+
+/* Legend */
+.legend{
+margin-top:25px;
+padding:10px;
+background:white;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+.legend h3{
+margin-top:0;
+color:#0d5875;
+}
+
+.legend p{
+margin:6px 0;
+font-size:14px;
+}
