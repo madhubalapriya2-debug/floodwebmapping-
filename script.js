@@ -8,11 +8,12 @@ var map = L.map('map').setView([22.5, 80], 5);
 // Base Map
 // ================================
 L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-        attribution: '© OpenStreetMap'
-    }
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+    attribution:'© OpenStreetMap'
+}
 ).addTo(map);
+
 
 
 var floodLayer;
@@ -21,147 +22,186 @@ var floodLayer;
 // ================================
 // Flood Colors
 // ================================
-function getFloodColor(dn) {
+function getFloodColor(dn){
 
     return dn == 1 ? "green" :
            dn == 2 ? "yellow" :
            dn == 3 ? "orange" :
-           dn == 4 ? " Red" :
-           dn == 5 ? "Maroon" :
+           dn == 4 ? "red" :
+           dn == 5 ? "maroon" :
            "gray";
 }
 
 
 
 // ================================
-// WFS URL
+// GitHub GeoJSON File
 // ================================
 const floodmap =
-"flooddissolve.shp"
+"flooddissolve.geojson";
+
 
 
 // ================================
-// Load WFS
+// Load Flood GeoJSON
 // ================================
 fetch(floodmap)
 
-.then(response => response.json())
-
-.then(data => {
+.then(response=>{
 
 
-    console.log(
-        "Flood Features:",
-        data.features
-    );
+    if(!response.ok){
 
+        throw Error(
+        "GeoJSON not found"
+        );
 
-    // ================================
-    // Fixed Dropdown 1-5
-    // ================================
-    const dropdown =
-        document.getElementById("floodSelect");
-
-
-    dropdown.innerHTML =
-        "<option value=''>Select Flood Level</option>";
-
-
-    for(let i=1;i<=5;i++){
-
-        let option =
-        document.createElement("option");
-
-
-        option.value=i;
-
-        option.textContent =
-        "Flood Level " + i;
-
-
-        dropdown.appendChild(option);
     }
 
+    return response.json();
+
+})
 
 
-    // ================================
-    // Create Flood GeoJSON Layer
-    // ================================
-    floodLayer = L.geoJSON(
-        data,
-        {
+.then(data=>{
 
 
-        style:function(feature){
-
-
-            let level =
-            Number(feature.properties.DN);
-
-
-            return {
-
-                color:"black",
-
-                weight:1,
-
-                fillColor:
-                getFloodColor(level),
-
-                fillOpacity:0.6
-            };
-        },
+console.log(
+"Flood data loaded",
+data
+);
 
 
 
-        onEachFeature:function(
-            feature,
-            layer
-        ){
-
-
-            let level =
-            feature.properties.DN;
-
-
-
-            layer.bindPopup(
-
-            `
-            <b>Flood Level:</b>
-            ${level}
-            `
-
-            );
+// ================================
+// Dropdown 1-5
+// ================================
+let dropdown =
+document.getElementById(
+"floodSelect"
+);
 
 
 
-            layer.on(
-            'click',
-            function(){
-
-
-                map.fitBounds(
-                    layer.getBounds()
-                );
-
-
-            });
-
-
-        }
+dropdown.innerHTML =
+`
+<option value="">
+Select Flood Level
+</option>
+`;
 
 
 
-    }).addTo(map);
+for(let i=1;i<=5;i++){
+
+
+let option =
+document.createElement("option");
+
+
+option.value=i;
+
+option.textContent =
+"Flood Level "+i;
+
+
+dropdown.appendChild(option);
+
+
+}
 
 
 
-    // Zoom to flood layer
-    map.fitBounds(
-        floodLayer.getBounds()
-    );
 
+
+// ================================
+// Create Layer
+// ================================
+floodLayer =
+L.geoJSON(
+data,
+{
+
+
+style:function(feature){
+
+
+let level =
+Number(
+feature.properties.DN
+);
+
+
+
+return {
+
+color:"black",
+
+weight:1,
+
+fillColor:
+getFloodColor(level),
+
+fillOpacity:0.6
+
+};
+
+
+},
+
+
+
+
+onEachFeature:function(
+feature,
+layer
+){
+
+
+let level =
+feature.properties.DN;
+
+
+
+layer.bindPopup(
+
+`
+<b>Flood Level:</b>
+${level}
+`
+
+);
+
+
+
+layer.on(
+"click",
+function(){
+
+map.fitBounds(
+layer.getBounds()
+);
+
+}
+
+);
+
+
+}
+
+
+
+}
+)
+.addTo(map);
+
+
+
+
+// Zoom
+map.fitBounds(
+floodLayer.getBounds()
+);
 
 
 
@@ -169,12 +209,16 @@ fetch(floodmap)
 
 .catch(error=>{
 
+
 console.error(
-"Error loading WFS:",
+"Loading error:",
 error
 );
 
+
 });
+
+
 
 
 
@@ -184,86 +228,87 @@ error
 // Dropdown Filter
 // ================================
 document
-.getElementById("floodSelect")
+.getElementById(
+"floodSelect"
+)
 .addEventListener(
 "change",
 function(){
 
 
-    let selectedLevel =
-    Number(this.value);
+let selected =
+Number(this.value);
 
 
 
-    if(!floodLayer)
-        return;
+if(!floodLayer)
+return;
+
+
+
+floodLayer.eachLayer(
+function(layer){
+
+
+
+let dn =
+Number(
+layer.feature.properties.DN
+);
 
 
 
 
-    floodLayer.eachLayer(
-    function(layer){
+if(dn === selected){
 
 
-        let dn =
-        Number(
-        layer.feature.properties.DN
-        );
+layer.setStyle({
 
+color:"blue",
 
+weight:4,
 
-        if(dn === selectedLevel){
+fillColor:"cyan",
 
+fillOpacity:0.8
 
-
-            // Selected flood class
-
-            layer.setStyle({
-
-                color:"blue",
-
-                weight:4,
-
-                fillColor:"cyan",
-
-                fillOpacity:0.8
-            });
+});
 
 
 
-            map.fitBounds(
-                layer.getBounds()
-            );
-
-
-            layer.openPopup();
+map.fitBounds(
+layer.getBounds()
+);
 
 
 
-        }
-
-        else{
+layer.openPopup();
 
 
-            // Reset other layers
+}
 
-            layer.setStyle({
-
-                color:"black",
-
-                weight:1,
-
-                fillColor:
-                getFloodColor(dn),
-
-                fillOpacity:0.4
-            });
+else{
 
 
-        }
+layer.setStyle({
+
+color:"black",
+
+weight:1,
+
+fillColor:
+getFloodColor(dn),
+
+fillOpacity:0.4
+
+});
 
 
-    });
+}
+
+
+
+});
 
 
 });
