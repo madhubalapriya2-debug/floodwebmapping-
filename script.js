@@ -38,7 +38,7 @@ function getFloodColor(dn){
 // GitHub GeoJSON File
 // ================================
 const floodmap =
-"flooddissolve.geojson";
+"flooddissolve.shp";
 
 
 
