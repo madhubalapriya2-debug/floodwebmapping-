@@ -52,13 +52,13 @@ return dn==1 ? "green":
 
 
 const wfsUrl =
-"asset/floodlayer.geojson";
+"floodlayer.geojson";
 
 
 
 const buildingUrl =
 
-"asset/risk_building_distance.geojson";
+"risk_building_distance.geojson";
 
 
 
